@@ -1,0 +1,62 @@
+#include <Servo.h>
+
+Servo myServo;
+
+const int trigPin = 9;
+const int echoPin = 10;
+
+const int buzzer = 7;
+
+long duration;
+int distance;
+
+int servoPos = 0;
+bool servoState = false;
+unsigned long previousMillis = 0;
+const long servoDelay = 200;
+
+void setup() {
+  pinMode(trigPin, OUTPUT);
+  pinMode(echoPin, INPUT);
+  pinMode(buzzer, OUTPUT);
+
+  myServo.attach(6);
+  myServo.write(0);
+
+  Serial.begin(9600);
+}
+
+void loop() {
+  digitalWrite(trigPin, LOW);
+  delayMicroseconds(0.2);
+  digitalWrite(trigPin, HIGH);
+  delayMicroseconds(0.2);
+  digitalWrite(trigPin, LOW);
+
+  duration = pulseIn(echoPin, HIGH, 25000);
+
+  if (duration > 0) {
+    distance = duration * 0.034 / 2;
+    Serial.print("Distance: ");
+    Serial.println(distance);
+  }
+  if (distance > 0 && distance < 100) {
+    digitalWrite(buzzer, HIGH);
+  } else {
+    digitalWrite(buzzer, LOW);
+  }
+  unsigned long currentMillis = millis();
+
+  if (currentMillis - previousMillis >= servoDelay) {
+    previousMillis = currentMillis;
+
+    if (servoState) {
+      myServo.write(0);
+    } else {
+      myServo.write(45);
+    }
+
+    servoState = !servoState;
+  }
+}
+
