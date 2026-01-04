@@ -25,7 +25,6 @@ This project uses an ultrasonic sensor to detect obstacles. When something is cl
 ## Features
 - Obstacle detection up to ~100 cm
 - Variable buzzer alert (faster = closer)
-- Servo scanning when obstacle detected
 - Serial monitor shows distance
 
 ## How to Use
